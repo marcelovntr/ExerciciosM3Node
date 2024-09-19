@@ -1,28 +1,36 @@
-const Sequelize =  require('sequelize')
+const Sequelize = require('sequelize')
 const database = require('../config')
 
-const Usuario = database.define('usuarios', {
+const Respostas = database.define('respostas',{
     id: {
         type: Sequelize.STRING,
         allowNull: false,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4,
       },
-      nome: {
-        type: Sequelize.STRING,
+      conteudo: {
+        type: Sequelize.TEXT,
         allowNull: false,
       },
-      sobrenome: {
-        type: Sequelize.STRING,
-      },
-      email: {
+      perguntaId: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        references: {
+          model: 'perguntas',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      senha: {
+      usuariod: {
         type: Sequelize.STRING,
         allowNull: false,
+        references: {
+          model: 'usuarios',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -33,5 +41,4 @@ const Usuario = database.define('usuarios', {
         defaultValue: Sequelize.NOW
       }
 })
-
-module.exports = Usuario
+module.exports = { Respostas }

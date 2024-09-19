@@ -1,8 +1,7 @@
-const Sequelize = require('sequelize')
-const database = require('../config')
+const Sequelize = require("sequelize");
+const database = require("../config");
 
-
-const Questionarios = database.define('questionarios', {
+const Questionarios = database.define("questionarios", {
   id: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -11,11 +10,11 @@ const Questionarios = database.define('questionarios', {
   },
   titulo: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   descricao: {
     type: Sequelize.TEXT,
-    allowNull: false
+    allowNull: false,
   },
   createdAt: {
     type: Sequelize.DATE,
@@ -25,11 +24,57 @@ const Questionarios = database.define('questionarios', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW,
   },
-})
+
+},
+//aqui abre o 3º/terceiro parâmetro
+{
+  scopes:{
+    carregarPerguntas: {
+      include: ['perguntas'] //[{model: Perguntas, where: {xyz: true}}]
+    },
+    // enxuto: {
+    //   attributes: ['id', 'nome']
+    // }
+  }
+}
+
+);
+
+const Perguntas = database.define("perguntas", {
+  id: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    primaryKey: true,
+    defaultValue: Sequelize.UUIDV4,
+  },
+  descricao: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+  },
+  questionarioId: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    references: {
+      model: "questionarios",
+      key: "id",
+    },
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW,
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW,
+  },
+});
 
 Questionarios.hasMany(Perguntas, {
-  foreignKey: 'questionarioId',
-  as: 'perguntas'
-})
+  foreignKey: "questionarioId",
+  as: "perguntas",
+});
 
-module.exports = Questionarios
+Perguntas.belongsTo(Questionarios, { foreignKey: "questionarioId" });
+module.exports = { Questionarios, Perguntas };

@@ -4,8 +4,8 @@ require('dotenv').config()
 const database = require('./database/config')
 
 const express = require('express')
-const UsuariosControllers = require('./dominios/usuarios/usuarios.controllers')
-const QuestionariosControllers = require('./dominios/questionarios/questionarios.controllers')
+const UsuariosControllers = require('./dominios/usuarios/usuarios.controller')
+const QuestionariosControllers = require('./dominios/questionarios/questionarios.controller')
 
 
 const app = express()
