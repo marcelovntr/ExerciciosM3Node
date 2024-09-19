@@ -27,7 +27,7 @@ const { hash } = require("bcrypt");
 class UsuariosServices {
   async list() {
     const usuarios = await usuarioModel.findAll({
-      attributes:['id', 'nome', 'sobrenome', 'email', 'createdAt', 'updatedAt']
+      attributes:['id', 'nome', 'sobrenome', 'email', 'permissoes', 'createdAt', 'updatedAt']
     })
     return usuarios;
   }
@@ -45,7 +45,7 @@ class UsuariosServices {
     const senhaCrypto =  await hash(senha, 8)
 
 const usuario = await usuarioModel.create({
-  email, nome, sobrenome, senha: senhaCrypto
+  nome, email, sobrenome, senha: senhaCrypto, permissoes
 })
     // const novoUsuario = {
     //   id: uuid(),
