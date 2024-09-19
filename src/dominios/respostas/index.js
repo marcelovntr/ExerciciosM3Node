@@ -7,40 +7,19 @@ const { garantirAutenticacaoRbac, garantirAutenticacao } = require("../../middle
 const respostasRouter = Router();
 const respostasController = new RespostasController();
 
-// const schemaPostRespostas = yup.object({
-//   body: yup.object({
-//     titulo: yup.string().required("Título é obrigatório"),
-//     descricao: yup.string().required("Descrição é obrigatória"),
-//     perguntas: yup.array(
-//       yup.object({
-//         descricao: yup.string().required('Descrição da pergunta é obrigatória!')
-//       })
-//     ),
-//   }),
-// });
+const schemaPostRespostas = yup.object({
+  body: yup.object({
+    conteudo: yup.string().required("Conteúdo da resposta é obrigatório"),
+    perguntaId: yup.string().required("Id da pergunta é necessário"),
+    usuarioId: yup.string().required("Id de usuário é necessário"),
+  }),
+});
 
-// const schemaDeleteRespostas = yup.object({
-//   params: yup.object({
-//     id: yup
-//       .string()
-//       .uuid("Id informado não é válido")
-//       .required("O Id é obrigatório!"),
-//   }),
-// });
-
-
-// respostasRouter.use(garantirAutenticacaoRbac('criador'))
-// respostasRouter.get("/", respostasController.index);
-respostasRouter.use(garantirAutenticacao)
+respostasRouter.use(garantirAutenticacaoRbac(['estudante']))
 respostasRouter.post(
-  "/perguntaId",
+  "/perguntaId", validarSchema(schemaPostRespostas),
   respostasController.create
 );
 
-// respostasRouter.delete(
-//   "/:id",
-//   validarSchema(schemaDeleteRespostas),
-//   respostasController.delete
-// );
 
 module.exports = respostasRouter;

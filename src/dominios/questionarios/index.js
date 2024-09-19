@@ -29,7 +29,7 @@ const schemaDeleteQuestionarios = yup.object({
 });
 
 
-questionariosRouter.use(garantirAutenticacaoRbac('criador'))
+questionariosRouter.use(garantirAutenticacaoRbac('criador')) // <--- aqui tbm alterado!!!
 questionariosRouter.get("/", questionariosController.index);
 
 questionariosRouter.post(
